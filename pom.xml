@@ -46,7 +46,7 @@
             <artifactId>pedinte</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/pedinte-core.jar</systemPath>
+            <systemPath>${project.basedir}/resources/libs/pedinte-core.jar</systemPath>
         </dependency>
     </dependencies>
 

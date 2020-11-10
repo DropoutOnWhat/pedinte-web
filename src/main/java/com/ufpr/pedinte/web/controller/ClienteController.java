@@ -23,7 +23,7 @@ public class ClienteController {
     ClienteService clienteService;
 
     @GetMapping("/")
-    public ResponseJSON findAll() {
+    public List<ClienteJSON> findAll() {
         List<Cliente> result = new ArrayList<>();
         try {
             clienteService = new ClienteService();
@@ -35,7 +35,7 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseJSON findById(@PathVariable(value="id") int id) {
+    public ClienteJSON findById(@PathVariable(value="id") int id) {
         Cliente result = null;
         try {
             clienteService = new ClienteService();

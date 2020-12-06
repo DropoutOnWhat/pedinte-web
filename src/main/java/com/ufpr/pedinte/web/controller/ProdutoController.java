@@ -2,8 +2,8 @@ package com.ufpr.pedinte.web.controller;
 
 import com.ufpr.pedinte.core.model.Produto;
 import com.ufpr.pedinte.web.json.ProdutoJSON;
-import com.ufpr.pedinte.web.json.ResponseJSON;
 import com.ufpr.pedinte.web.service.ProdutoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -20,14 +20,14 @@ import java.util.List;
 @RequestMapping(value = "/produto")
 public class ProdutoController {
 
-    ProdutoService produtoService;
+    @Autowired
+    ProdutoService service;
 
     @GetMapping("/")
-    public ResponseJSON findAll() {
+    public List<ProdutoJSON> findAll() throws SQLException {
         List<Produto> result = new ArrayList<>();
         try {
-            produtoService = new ProdutoService();
-            result = produtoService.findAll();
+            result = service.findAll();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
@@ -35,11 +35,10 @@ public class ProdutoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseJSON findById(@PathVariable(value="id") int id) {
+    public ProdutoJSON findById(@PathVariable(value="id") int id) {
         Produto result = null;
         try {
-            produtoService = new ProdutoService();
-            result = produtoService.findById(id);
+            result = service.findById(id);
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
@@ -50,20 +49,18 @@ public class ProdutoController {
     public void createProduct(@RequestBody ProdutoJSON json) throws SQLException {
         boolean success = false;
         try {
-            produtoService = new ProdutoService();
             Produto produto = ProdutoJSON.map(json);
-            success = produtoService.create(produto);
+            success = service.create(produto);
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
     }
 
-    @PutMapping
-    public void updateProduct(@RequestBody ProdutoJSON json) {
+    @PutMapping("/{id}")
+    public void updateProduct(@RequestBody ProdutoJSON json, @PathVariable(value="id") int id) {
         try {
-            produtoService = new ProdutoService();
             Produto produto = ProdutoJSON.map(json);
-            produtoService.update(produto);
+            service.update(produto);
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
@@ -72,8 +69,7 @@ public class ProdutoController {
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable(value="id") int id) {
         try {
-            produtoService = new ProdutoService();
-            produtoService.delete(id);
+            service.delete(id);
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }

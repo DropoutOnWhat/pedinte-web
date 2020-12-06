@@ -1,6 +1,5 @@
 package com.ufpr.pedinte.web.service;
 
-import com.ufpr.pedinte.core.dao.ClienteDAO;
 import com.ufpr.pedinte.core.model.Cliente;
 import org.springframework.stereotype.Service;
 
@@ -10,38 +9,18 @@ import java.util.List;
 /**
  * Created by Regis Gaboardi (@gmail.com)
  * Provided with Love and IntelliJ IDEA for pedinte-spring.
- * 27/09/2020
+ * 05/12/2020
  */
 
-@Service
-public class ClienteService {
+public interface ClienteService {
 
-    ClienteDAO dao = new ClienteDAO();
+    List<Cliente> findAll() throws SQLException;
 
-    public List<Cliente> findAll() throws SQLException {
-        System.out.println("Buscando todos os Clientes do CORE.");
-        return dao.fetchAll();
-    }
+    Cliente findById(int id) throws SQLException;
 
-    public Cliente findById(int id) throws SQLException {
-        System.out.println("Procurando Cliente com ID = " + id + " no CORE.");
-        return dao.find(id);
-    }
+    boolean create(Cliente cliente) throws SQLException;
 
-    public boolean create(Cliente cliente) throws SQLException {
-        System.out.println("Criando novo cliente no CORE.");
-        return dao.createCliente(cliente);
-    }
+    void update(Cliente cliente) throws SQLException;
 
-    public boolean update(Cliente cliente) throws SQLException {
-        System.out.println("Atualizando cliente com ID = " + cliente.getId() + " no CORE.");
-        return dao.updateCliente(cliente);
-    }
-
-    public boolean delete(int id) throws SQLException {
-        System.out.println("Removendo cliente com ID = " + id + " no CORE.");
-        Cliente cliente = new Cliente();
-        cliente.setId(id);
-        return dao.removeCliente(cliente);
-    }
+    void delete(int id) throws SQLException;
 }

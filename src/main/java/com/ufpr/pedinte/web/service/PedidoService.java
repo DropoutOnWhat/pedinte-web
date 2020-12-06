@@ -1,9 +1,6 @@
 package com.ufpr.pedinte.web.service;
 
-import com.ufpr.pedinte.core.dao.PedidoDAO;
-import com.ufpr.pedinte.core.model.ItemDoPedido;
 import com.ufpr.pedinte.core.model.Pedido;
-import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -11,28 +8,20 @@ import java.util.List;
 /**
  * Created by Regis Gaboardi (@gmail.com)
  * Provided with Love and IntelliJ IDEA for pedinte-spring.
- * 24/10/2020
+ * 05/12/2020
  */
 
-@Service
-public class PedidoService {
+public interface PedidoService {
 
-    PedidoDAO dao = new PedidoDAO();
+    List<Pedido> findAll() throws SQLException;
 
-//    public List<Pedido> findAll() throws SQLException {
-//        System.out.println("Buscando todos os Pedidos do CORE.");
-//        return dao.fetchAll();
-//    }
+    Pedido findById(int id) throws SQLException;
 
-    public Pedido findById(int id) {
-        return null;
-    }
+    void create(Pedido pedido) throws SQLException;
 
-    public List<ItemDoPedido> findByClient(int cpf) throws SQLException {
-        return dao.findItensDoCliente(cpf);
-    }
+    void update(Pedido pedido) throws SQLException;
 
-    public void create(Pedido pedido) throws SQLException {
-        dao.createPedido(pedido.getCliente().getId());
-    }
+    void delete(int id) throws SQLException;
+
+
 }

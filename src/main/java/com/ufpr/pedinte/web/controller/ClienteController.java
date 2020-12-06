@@ -2,8 +2,8 @@ package com.ufpr.pedinte.web.controller;
 
 import com.ufpr.pedinte.core.model.Cliente;
 import com.ufpr.pedinte.web.json.ClienteJSON;
-import com.ufpr.pedinte.web.json.ResponseJSON;
 import com.ufpr.pedinte.web.service.ClienteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -20,14 +20,14 @@ import java.util.List;
 @RequestMapping("/cliente")
 public class ClienteController {
 
-    ClienteService clienteService;
+    @Autowired
+    ClienteService service;
 
     @GetMapping("/")
     public List<ClienteJSON> findAll() {
         List<Cliente> result = new ArrayList<>();
         try {
-            clienteService = new ClienteService();
-            result = clienteService.findAll();
+            result = service.findAll();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
@@ -38,8 +38,7 @@ public class ClienteController {
     public ClienteJSON findById(@PathVariable(value="id") int id) {
         Cliente result = null;
         try {
-            clienteService = new ClienteService();
-            result = clienteService.findById(id);
+            result = service.findById(id);
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
@@ -48,22 +47,19 @@ public class ClienteController {
 
     @PostMapping
     public void createCliente(@RequestBody ClienteJSON json) throws SQLException {
-        boolean success = false;
         try {
-            clienteService = new ClienteService();
             Cliente cliente = ClienteJSON.map(json);
-            success = clienteService.create(cliente);
+            service.create(cliente);
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
     }
 
-    @PutMapping
-    public void updateCliente(@RequestBody ClienteJSON json) {
+    @PutMapping("/{id}")
+    public void updateCliente(@RequestBody ClienteJSON json, @PathVariable(value="id") int id) {
         try {
-            clienteService = new ClienteService();
             Cliente cliente = ClienteJSON.map(json);
-            clienteService.update(cliente);
+            service.update(cliente);
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
@@ -72,8 +68,7 @@ public class ClienteController {
     @DeleteMapping("/{id}")
     public void deleteCliente(@PathVariable(value="id") int id) {
         try {
-            clienteService = new ClienteService();
-            clienteService.delete(id);
+            service.delete(id);
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }

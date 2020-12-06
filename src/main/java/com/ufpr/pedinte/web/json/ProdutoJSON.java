@@ -33,42 +33,20 @@ public class ProdutoJSON {
         this.descricao = descricao;
     }
 
-    public static ResponseJSON map(List<Produto> produtos) {
-        ResponseJSON response = new ResponseJSON();
-        if(produtos.isEmpty()) {
-            response.setStatus(400);
-            response.setMessage("Nenhum Produto encontrado.");
-            System.out.println(response.getMessage());
-        } else {
-            System.out.println("Mapeando resposta do CORE: Produto para JSON.");
-            response.setStatus(200);
-            response.setMessage("Produtos encontrados estão no content.");
-            List<ProdutoJSON> result = new ArrayList<>();
-            for(Produto each : produtos) {
-                ProdutoJSON json = new ProdutoJSON();
-                json.setId(each.getId());
-                json.setDescricao(each.getDescricao());
-                result.add(json);
-            }
-            response.setContent(result);
+    public static List<ProdutoJSON> map(List<Produto> produtos) {
+        System.out.println("Mapeando resposta do CORE: Produto para JSON.");
+        List<ProdutoJSON> response = new ArrayList<>();
+        for(Produto each : produtos) {
+           response.add(map(each));
         }
         return response;
     }
 
-    public static ResponseJSON map(Produto produto) {
-        ResponseJSON response = new ResponseJSON();
-        if(produto == null || produto.getId() == 0) {
-            response.setStatus(400);
-            response.setMessage("Nenhum Produto encontrado.");
-            System.out.println(response.getMessage());
-        } else {
-            System.out.println("Mapeando resposta do CORE: Protudo para JSON.");
-            response.setStatus(200);
-            response.setMessage("Produtos encontrados estão no content.");
-            ProdutoJSON json = new ProdutoJSON();
-            json.setId(produto.getId());
-            json.setDescricao(produto.getDescricao());
-            response.setContent(json);
+    public static ProdutoJSON map(Produto produto) {
+        ProdutoJSON response = new ProdutoJSON();
+        if (produto != null) {
+            response.setId(produto.getId());
+            response.setDescricao(produto.getDescricao());
         }
         return response;
     }
